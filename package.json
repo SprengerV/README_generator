@@ -1,0 +1,23 @@
+{
+  "name": "readme_generator",
+  "version": "1.0.0",
+  "description": "CLI for building good README.md files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SprengerV/README_generator.git"
+  },
+  "author": "Brendan Francis",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/SprengerV/README_generator/issues"
+  },
+  "homepage": "https://github.com/SprengerV/README_generator#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "inquirer": "^7.3.3"
+  }
+}
