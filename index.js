@@ -1,104 +1,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const generateMd = require('./lib/generateMd.js')
-
-let markdown = ``
-// generate raw text in md syntax
-
-// inquirer
-//     .prompt([
-//         {
-//             type: "input",
-//             name: "projName",
-//             message: "Tell me the name of your project."
-//         },
-//         {
-//             type: "input",
-//             name: "description",
-//             message: "Give me a brief description of your project to be included in the ABOUT section of your README."
-//         },
-//         {
-//             type: "input",
-//             name: "tech",
-//             message: "tech?",
-//             validate:
-//         }
-//     ])
-//     .then((ans) => {
-//         markdown += `
-//         <p align="center">
-//             <h3 align="center">${ans.projName}</h3>
-//         </p>
-
-
-
-//         <!-- TABLE OF CONTENTS -->
-//         <details open="open">
-//             <summary>Table of Contents</summary>
-//             <ol>
-//                 <li>
-//                 <a href="#about-the-project">About The Project</a>
-//                 <ul>
-//                     <li><a href="#built-with">Built With</a></li>
-//                 </ul>
-//                 </li>
-//                 <li><a href="#installation">Installation</a></li>
-//                 <li><a href="#usage">Usage</a></li>
-//                 <li><a href="#testing">Testing</a></li>
-//                 <li><a href="#contributing">Contributing</a></li>
-//                 <li><a href="#contact">Contact</a></li>
-//                 <li><a href="#license">License</a></li>
-//             </ol>
-//         </details>
-
-
-
-//         <!-- ABOUT THE PROJECT -->
-//         ## About The Project
-
-//         ${ans.description}
-
-
-
-//         `
-//     });
-    
-// console.log(markdown);
-// let builtWith = `### Built With
-
-// <ul>
-// `
-// askTech = () => {
-//     inquirer
-//         .prompt([
-//             {
-//                 type: "input",
-//                 name: "tech",
-//                 message: "Enter one of the technologies used to build your project. This will be included in the BUILT WITH section of your README"
-//             },
-//             {
-//                 type: "confirm",
-//                 name: "more",
-//                 message: "Would you like to add another technology?"
-//             }
-//         ])
-//         .then((ans) => {
-//             builtWith += `  <li>${ans.tech}<li>
-//             `
-//             if (ans.more) askTech();
-//             else {
-//                 builtWith += `</ul>
-            
-            
-//                 `
-//                 markdown += builtWith
-//                 console.log(markdown);
-//             }
-//         });
-// };
-
-
-
+const saveMd = require('./lib/save.js')
 
 inquirer
     .prompt([
@@ -128,6 +31,11 @@ inquirer
         },
         {
             type: "input",
+            name: "repoURL",
+            message: "What is the URL of your project's repository?"
+        },
+        {
+            type: "input",
             name: "desc",
             message: "Give me a brief description of your project. This will be included in the ABOUT section of your README"
         },
@@ -150,17 +58,16 @@ inquirer
             type: "input",
             name: "test",
             message: "Tell me the procedures for testing your project. This will be included in the TESTING section of your README."
+        },
+        {
+            type: "list",
+            name: "license",
+            message: "Which license will you be using for your project?",
+            choices: ["Apache-2.0", "MPL-2.0", "BSD-3-Clause", "BSD-2-Clause", "MIT", "GPL-2.0", "GPL-3.0", "LGPL-3.0", "AGPL-3.0", "Unlicense", "None"]
         }
     ])
-    .then((answers) => {
-        
-        fs.writeFile(
-            answers.projName + '_README.md', 
-            generateMd(answers, techList), 
-            (err) => err ? console.log(err) : console.log('File saved!')
-        );
-        console.log("Your README.md has been created at '../README.md'!")
-        process.exit();
+    .then((ans) => {
+        saveMd(ans, generateMd(ans));  
     })
     .catch((error) => {
         console.log(error);
